@@ -1,0 +1,16 @@
+Project Setup:
+  ✓ Set up PostgreSQL database
+  ✓ Initialize Next.js environment
+  ✓ Configure PostgreSQL URL in environment variables
+  ☐ Install and configure Prisma ORM
+  ☐ Set up shadcn/ui
+  ☐ Install additional dependencies
+  ☐ Create GitHub repository
+  ☐ Set up GitHub issues for project tracking
+
+Database Schema:
+  ☐ Define Race model
+  ☐ Define Driver model
+  ☐ Define Team model
+  ☐ Define User model
+  ☐ Define Prediction model
