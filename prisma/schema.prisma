@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -11,4 +6,67 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        String       @id @default(cuid())
+  name      String?
+  email     String       @unique
+  image     String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  predictions Prediction[]
+}
+
+model Race {
+  id          String       @id @default(cuid())
+  name        String
+  location    String
+  date        DateTime
+  season      Int
+  round       Int
+  circuit     String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  predictions Prediction[]
+}
+
+model Driver {
+  id          String       @id @default(cuid())
+  name        String
+  number      Int          @unique
+  code        String       @unique
+  teamId      String
+  team        Team         @relation(fields: [teamId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  predictions Prediction[]
+}
+
+model Team {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  drivers   Driver[]
+}
+
+model Prediction {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  raceId       String
+  race         Race     @relation(fields: [raceId], references: [id])
+  driverId     String
+  driver       Driver   @relation(fields: [driverId], references: [id])
+  position     Int
+  qualifyingPosition Int?
+  fastestLap   Boolean  @default(false)
+  dnf          Boolean  @default(false)
+  points       Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, raceId, driverId])
 }
